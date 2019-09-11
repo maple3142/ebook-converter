@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Epub 繁簡轉換</title>
+	</head>
+	<body>
+		<form action="/convert-epub" method="POST" enctype="multipart/form-data" class="block">
+			<div>
+				<label for="epub">Epub 檔案:</label>
+				<input type="file" id="epub" name="epub" accept="application/epub+zip" />
+			</div>
+			<div>
+				<label for="type">轉換模式:</label>
+				<select id="type" name="type">
+					<option value="hongKongToSimplified">香港繁體轉簡體</option>
+					<option value="simplifiedToHongKong">簡體轉香港繁體</option>
+					<option value="simplifiedToTraditional">簡體轉繁體</option>
+					<option value="simplifiedToTaiwan" selected>簡體轉台灣正體</option>
+					<option value="simplifiedToTaiwanWithPhrases">簡體轉台灣正體(含單字)</option>
+					<option value="traditionalToHongKong">繁體轉香港繁體</option>
+					<option value="traditionalToSimplified">繁體轉簡體</option>
+					<option value="traditionalToTaiwan">繁體轉台灣正體</option>
+					<option value="taiwanToSimplified">台灣正體轉簡體</option>
+					<option value="taiwanToSimplifiedWithPhrases">台灣正體轉簡體(含單字)</option>
+				</select>
+			</div>
+			<input type="submit" value="轉換" />
+		</form>
+		<form action="/convert-txt" method="POST" enctype="multipart/form-data" class="block">
+			<div>
+				<label for="txt">Txt 檔案:</label>
+				<input type="file" id="txt" name="txt" accept="text/plain" />
+			</div>
+			<div>
+				<label for="type">轉換模式:</label>
+				<select id="type" name="type">
+					<option value="hongKongToSimplified">香港繁體轉簡體</option>
+					<option value="simplifiedToHongKong">簡體轉香港繁體</option>
+					<option value="simplifiedToTraditional">簡體轉繁體</option>
+					<option value="simplifiedToTaiwan" selected>簡體轉台灣正體</option>
+					<option value="simplifiedToTaiwanWithPhrases">簡體轉台灣正體(含單字)</option>
+					<option value="traditionalToHongKong">繁體轉香港繁體</option>
+					<option value="traditionalToSimplified">繁體轉簡體</option>
+					<option value="traditionalToTaiwan">繁體轉台灣正體</option>
+					<option value="taiwanToSimplified">台灣正體轉簡體</option>
+					<option value="taiwanToSimplifiedWithPhrases">台灣正體轉簡體(含單字)</option>
+				</select>
+			</div>
+			<input type="submit" value="轉換" />
+		</form>
+		<div class="block">
+			請注意，所有的檔案編碼都會轉換為 UTF-8，無論原本的檔案是 BIG-5, GBK 或是其他的都沒差
+		</div>
+		<style>
+			body {
+				display: flex;
+				align-items: center;
+				flex-flow: column;
+			}
+			.block {
+				border: solid 1px;
+				padding: 5px;
+				margin: 2px;
+				width: 350px;
+			}
+		</style>
+	</body>
+</html>

@@ -1,0 +1,23 @@
+{
+	"name": "ebook-converter",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"bin": {
+		"epub-cvt": "bin/cli.js"
+	},
+	"scripts": {
+		"start": "node server/index.js"
+	},
+	"dependencies": {
+		"archiver": "^3.1.1",
+		"chardet": "^0.8.0",
+		"express": "^4.17.1",
+		"fs-extra": "^8.1.0",
+		"iconv-lite": "^0.5.0",
+		"multer": "^1.4.2",
+		"node-opencc": "^2.0.1",
+		"tmp-promise": "^2.0.2",
+		"unzip": "^0.1.11"
+	}
+}
