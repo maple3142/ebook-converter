@@ -14,7 +14,7 @@
 			</div>
 			<div>
 				<label for="type">轉換模式:</label>
-				<select id="type" name="type">
+				<select id="type-epub" name="type">
 					<option value="hongKongToSimplified">香港繁體轉簡體</option>
 					<option value="simplifiedToHongKong">簡體轉香港繁體</option>
 					<option value="simplifiedToTraditional">簡體轉繁體</option>
@@ -36,7 +36,7 @@
 			</div>
 			<div>
 				<label for="type">轉換模式:</label>
-				<select id="type" name="type">
+				<select id="type-txt" name="type">
 					<option value="hongKongToSimplified">香港繁體轉簡體</option>
 					<option value="simplifiedToHongKong">簡體轉香港繁體</option>
 					<option value="simplifiedToTraditional">簡體轉繁體</option>
@@ -68,5 +68,18 @@
 				width: 350px;
 			}
 		</style>
+		<script>
+			// remember selected option
+			const selects = document.querySelectorAll('select')
+			for (const select of selects) {
+				if (!select.id) continue
+				select.addEventListener('change', () => {
+					localStorage.setItem(select.id, select.value)
+				})
+				if (localStorage.getItem(select.id) !== null) {
+					select.value = localStorage.getItem(select.id)
+				}
+			}
+		</script>
 	</body>
 </html>
