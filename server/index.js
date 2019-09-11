@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const express = require('express')
 const multer = require('multer')
+const rateLimit = require('./ratelimit')
 const cvtEpub = require('../src/convert-epub')
 const cvtText = require('../src/convert-text')
 
@@ -34,7 +35,7 @@ const appendFileName = (originalName, text) => {
 	const name = parts.join('.')
 	return name + text + '.' + ext
 }
-app.post('/convert-epub', upload.single('epub'), async (req, res) => {
+app.post('/convert-epub', rateLimit, upload.single('epub'), async (req, res) => {
 	if (req.file.mimetype !== 'application/epub+zip') {
 		return res.send('檔案並非 epub 類型，而且照理來說你不應該看到這個訊息，因為 html 的 form 有限制類型')
 	}
@@ -47,7 +48,7 @@ app.post('/convert-epub', upload.single('epub'), async (req, res) => {
 		fs.unlink(req.file.path)
 	}
 })
-app.post('/convert-txt', upload.single('txt'), async (req, res) => {
+app.post('/convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
 	if (req.file.mimetype !== 'text/plain') {
 		return res.send('檔案並非 txt 類型，而且照理來說你不應該看到這個訊息，因為 html 的 form 有限制類型')
 	}
