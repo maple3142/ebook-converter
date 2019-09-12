@@ -32,20 +32,16 @@ for (const form of forms) {
 			if (!e.lengthComputable) return
 			const val = (e.loaded / e.total) * 100
 			prog.value = val
-			if (Math.abs(val - 100) < Number.EPSILON) {
-				label.textContent = '下載中...'
-				prog.value = 0
-			}
 		})
 		xhr.addEventListener('progress', e => {
+			label.textContent = '下載中...'
 			if (!e.lengthComputable) return
 			const val = (e.loaded / e.total) * 100
 			prog.value = val
-			if (Math.abs(val - 100) < Number.EPSILON) {
-				label.textContent = '下載完成'
-			}
 		})
 		xhr.addEventListener('load', () => {
+			label.textContent = '下載完成'
+			prog.value = 100
 			const cd = xhr.getResponseHeader('Content-disposition')
 			const fname = decodeURIComponent(cd.split("UTF-8''").pop())
 			const a = document.createElement('a')

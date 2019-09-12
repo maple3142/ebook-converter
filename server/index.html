@@ -7,7 +7,7 @@
 		<title>Epub/Txt 繁簡轉換</title>
 	</head>
 	<body>
-		<form action="/convert-epub" method="POST" enctype="multipart/form-data" class="block file-form">
+		<form action="/convert.epub" method="POST" enctype="multipart/form-data" class="block file-form">
 			<div>
 				<label for="epub">Epub 檔案:</label>
 				<input type="file" id="epub" name="epub" accept="application/epub+zip" />
@@ -29,7 +29,7 @@
 			</div>
 			<input type="submit" value="轉換" />
 		</form>
-		<form action="/convert-txt" method="POST" enctype="multipart/form-data" class="block file-form">
+		<form action="/convert.txt" method="POST" enctype="multipart/form-data" class="block file-form">
 			<div>
 				<label for="txt">Txt 檔案:</label>
 				<input type="file" id="txt" name="txt" accept="text/plain" />
