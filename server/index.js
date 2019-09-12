@@ -17,9 +17,9 @@ app.get('/', (req, res) => {
 
 const downloadFile = async (response, filePath, fileName) => {
 	const { size } = await fs.stat(filePath)
-	response.setHeader('Content-Size', size)
+	response.setHeader('Content-Length', size)
 	response.setHeader('Content-Type', 'application/epub+zip')
-	response.setHeader('Content-Transfer-Encoding', 'Binary')
+	response.setHeader('Transfer-Encoding', 'chunked')
 	response.setHeader('Content-disposition', "attachment; filename*=UTF-8''" + encodeURIComponent(fileName))
 	return new Promise((res, rej) => {
 		// res is "resolve" of Promise, and response belongs to express
