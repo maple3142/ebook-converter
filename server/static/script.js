@@ -32,6 +32,9 @@ for (const form of forms) {
 			if (!e.lengthComputable) return
 			const val = (e.loaded / e.total) * 100
 			prog.value = val
+			if (Math.abs(val - 100) < Number.EPSILON) {
+				label.textContent = '處理中...'
+			}
 		})
 		xhr.addEventListener('progress', e => {
 			label.textContent = '下載中...'
