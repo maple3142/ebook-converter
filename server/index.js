@@ -7,12 +7,17 @@ const cvtEpub = require('../src/convert-epub')
 const cvtText = require('../src/convert-text')
 
 const app = express()
+app.use('/static', express.static(path.join(__dirname, 'static')))
 const uplDir = path.join(__dirname, 'uploads')
 const upload = multer({ dest: uplDir })
 
 const index = path.join(__dirname, './index.html')
 app.get('/', (req, res) => {
 	res.sendFile(index)
+})
+const favicon = path.join(__dirname, '/static/favicon.ico')
+app.get('/favicon.ico', (req, res) => {
+	res.sendFile(favicon)
 })
 
 const downloadFile = async (response, filePath, fileName) => {
@@ -37,7 +42,7 @@ const appendFileName = (originalName, text) => {
 }
 app.post('/convert-epub', rateLimit, upload.single('epub'), async (req, res) => {
 	if (req.file.mimetype !== 'application/epub+zip') {
-		return res.send('檔案並非 epub 類型，而且照理來說你不應該看到這個訊息，因為 html 的 form 有限制類型')
+		return res.send('檔案並非 epub 類型')
 	}
 	const newName = appendFileName(req.file.originalname, '-converted')
 	await cvtEpub(req.file.path, {
@@ -48,7 +53,7 @@ app.post('/convert-epub', rateLimit, upload.single('epub'), async (req, res) => 
 })
 app.post('/convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
 	if (req.file.mimetype !== 'text/plain') {
-		return res.send('檔案並非 txt 類型，而且照理來說你不應該看到這個訊息，因為 html 的 form 有限制類型')
+		return res.send('檔案並非 txt 類型')
 	}
 	const newName = appendFileName(req.file.originalname, '-converted')
 	await cvtText(req.file.path, {

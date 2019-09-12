@@ -1,0 +1,11 @@
+body {
+	display: flex;
+	align-items: center;
+	flex-flow: column;
+}
+.block {
+	border: solid 1px;
+	padding: 5px;
+	margin: 2px;
+	width: 350px;
+}

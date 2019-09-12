@@ -4,10 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>Epub 繁簡轉換</title>
+		<title>Epub/Txt 繁簡轉換</title>
 	</head>
 	<body>
-		<form action="/convert-epub" method="POST" enctype="multipart/form-data" class="block">
+		<form action="/convert-epub" method="POST" enctype="multipart/form-data" class="block file-form">
 			<div>
 				<label for="epub">Epub 檔案:</label>
 				<input type="file" id="epub" name="epub" accept="application/epub+zip" />
@@ -29,7 +29,7 @@
 			</div>
 			<input type="submit" value="轉換" />
 		</form>
-		<form action="/convert-txt" method="POST" enctype="multipart/form-data" class="block">
+		<form action="/convert-txt" method="POST" enctype="multipart/form-data" class="block file-form">
 			<div>
 				<label for="txt">Txt 檔案:</label>
 				<input type="file" id="txt" name="txt" accept="text/plain" />
@@ -55,81 +55,7 @@
 			<div>請注意，所有的檔案編碼都會轉換為 UTF-8，無論原本的檔案是 BIG-5, GBK 或是其他的都沒差</div>
 			<div><a href="https://github.com/maple3142/ebook-converter">GitHub</a></div>
 		</div>
-		<style>
-			body {
-				display: flex;
-				align-items: center;
-				flex-flow: column;
-			}
-			.block {
-				border: solid 1px;
-				padding: 5px;
-				margin: 2px;
-				width: 350px;
-			}
-		</style>
-		<script>
-			// remember selected option
-			const selects = document.querySelectorAll('select')
-			for (const select of selects) {
-				if (!select.id) continue
-				select.addEventListener('change', () => {
-					localStorage.setItem(select.id, select.value)
-				})
-				if (localStorage.getItem(select.id) !== null) {
-					select.value = localStorage.getItem(select.id)
-				}
-			}
-
-			// upload progress
-			const forms = document.querySelectorAll('form')
-			for (const form of forms) {
-				const prog = document.createElement('progress')
-				prog.max = 100
-				prog.value = 0
-				const label = document.createElement('span')
-				label.style.marginLeft = '1px'
-				form.appendChild(prog)
-				form.appendChild(label)
-
-				form.addEventListener('submit', e => {
-					e.preventDefault()
-					const data = new FormData(form)
-					const xhr = new XMLHttpRequest()
-					xhr.open(form.method, form.action)
-					xhr.responseType = 'blob'
-					xhr.upload.addEventListener('progress', e => {
-						label.textContent = '上傳中...'
-						if (!e.lengthComputable) return
-						const val = (e.loaded / e.total) * 100
-						prog.value = val
-						if (Math.abs(val - 100) < Number.EPSILON) {
-							label.textContent = '下載中...'
-							prog.value = 0
-						}
-					})
-					xhr.addEventListener('progress', e => {
-						if (!e.lengthComputable) return
-						const val = (e.loaded / e.total) * 100
-						prog.value = val
-						if (Math.abs(val - 100) < Number.EPSILON) {
-							label.textContent = '下載完成'
-						}
-					})
-					xhr.addEventListener('load', () => {
-						const cd = xhr.getResponseHeader('Content-disposition')
-						const fname = decodeURIComponent(cd.split("UTF-8''").pop())
-						const a = document.createElement('a')
-						a.href = URL.createObjectURL(xhr.response)
-						a.download = fname
-						document.body.appendChild(a)
-						a.click()
-						URL.revokeObjectURL(a.href)
-						a.remove()
-					})
-					xhr.send(data)
-				})
-			}
-		</script>
+		<link rel="stylesheet" href="/static/style.css">
+		<script src="/static/script.js"></script>
 	</body>
 </html>
