@@ -40,5 +40,5 @@ module.exports = async (filePath, config) => {
 	}
 	await Promise.all(files.map(f => cvtFile(f, { type: config.type })))
 	await zipDir(dir, config.dest || filePath)
-	cleanup()
+	await cleanup()
 }
