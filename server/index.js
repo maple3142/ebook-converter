@@ -26,6 +26,19 @@ const appendFileName = (originalName, text) => {
 	const name = parts.join('.')
 	return name + text + '.' + ext
 }
+const downloadFile = async (res, fileName, filePath) => {
+	const { size } = await fs.stat(filePath)
+	res.setHeader('Content-Length', size)
+	res.setHeader('X-File-Name', encodeURIComponent(fileName))
+	res.attachment(fileName).type('epub')
+	return new Promise((resolve, reject) =>
+		fs
+			.createReadStream(filePath)
+			.pipe(res)
+			.on('finish', resolve)
+			.on('error', reject)
+	)
+}
 app.post('/convert-epub', rateLimit, upload.single('epub'), async (req, res) => {
 	if (req.file.mimetype !== 'application/epub+zip') {
 		return res.send('檔案並非 epub 類型')
@@ -34,15 +47,7 @@ app.post('/convert-epub', rateLimit, upload.single('epub'), async (req, res) => 
 	await cvtEpub(req.file.path, {
 		type: req.body.type
 	})
-	const { size } = await fs.stat(req.file.path)
-	res.setHeader('Content-Length', size)
-	res.attachment(newName).type('epub')
-	await new Promise(resolve =>
-		fs
-			.createReadStream(req.file.path)
-			.pipe(res)
-			.on('finish', resolve)
-	)
+	await downloadFile(res, newName, req.file.path)
 	await fs.unlink(req.file.path)
 })
 app.post('/convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
@@ -53,15 +58,7 @@ app.post('/convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
 	await cvtText(req.file.path, {
 		type: req.body.type
 	})
-	const { size } = await fs.stat(req.file.path)
-	res.setHeader('Content-Length', size)
-	res.attachment(newName).type('txt')
-	await new Promise(resolve =>
-		fs
-			.createReadStream(req.file.path)
-			.pipe(res)
-			.on('finish', resolve)
-	)
+	await downloadFile(res, newName, req.file.path)
 	await fs.unlink(req.file.path)
 })
 

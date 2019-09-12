@@ -42,8 +42,7 @@ for (const form of forms) {
 		xhr.addEventListener('load', () => {
 			label.textContent = '下載完成'
 			prog.value = 100
-			const cd = xhr.getResponseHeader('Content-disposition')
-			const fname = decodeURIComponent(cd.split("UTF-8''").pop())
+			const fname = decodeURIComponent(xhr.getResponseHeader('X-File-Name'))
 			const a = document.createElement('a')
 			a.href = URL.createObjectURL(xhr.response)
 			a.download = fname
