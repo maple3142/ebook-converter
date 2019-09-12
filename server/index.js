@@ -21,7 +21,7 @@ const downloadFile = async (response, filePath, fileName) => {
 	response.setHeader('Content-Type', 'application/epub+zip')
 	response.setHeader('Content-Transfer-Encoding', 'Binary')
 	response.setHeader('Content-disposition', "attachment; filename*=UTF-8''" + encodeURIComponent(fileName))
-	await new Promise((res, rej) => {
+	return new Promise((res, rej) => {
 		// res is "resolve" of Promise, and response belongs to express
 		fs.createReadStream(filePath)
 			.pipe(response)
@@ -44,9 +44,7 @@ app.post('/convert-epub', rateLimit, upload.single('epub'), async (req, res) => 
 		type: req.body.type
 	})
 	await downloadFile(res, req.file.path, newName) // res.download is not reliable as it would corrupt file
-	if (await fs.exists(req.file.path)) {
-		fs.unlink(req.file.path)
-	}
+	await fs.unlink(req.file.path)
 })
 app.post('/convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
 	if (req.file.mimetype !== 'text/plain') {
@@ -56,10 +54,8 @@ app.post('/convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
 	await cvtText(req.file.path, {
 		type: req.body.type
 	})
-	downloadFile(res, req.file.path, newName) // res.download is not reliable as it would corrupt file
-	if (await fs.exists(req.file.path)) {
-		fs.unlink(req.file.path)
-	}
+	await downloadFile(res, req.file.path, newName) // res.download is not reliable as it would corrupt file
+	await fs.unlink(req.file.path)
 })
 
 const PORT = process.env.PORT || 8763
