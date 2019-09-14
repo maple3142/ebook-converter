@@ -19,6 +19,7 @@
 		"node-opencc": "^2.0.1",
 		"rate-limiter-flexible": "^1.1.1",
 		"tmp-promise": "^2.0.2",
-		"unzipper": "^0.10.5"
+		"unzipper": "^0.10.5",
+		"xfetch-js": "^0.3.4"
 	}
 }

@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const tmp = require('tmp-promise')
 const unzipper = require('unzipper')
-const cvtFile = require('./convert-text')
+const cvtFile = require('./opencc-convert-text')
 const zipDir = require('./zip-dir')
 
 /**

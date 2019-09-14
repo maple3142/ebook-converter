@@ -3,8 +3,10 @@ const fs = require('fs-extra')
 const express = require('express')
 const multer = require('multer')
 const rateLimit = require('./ratelimit')
-const cvtEpub = require('../src/convert-epub')
-const cvtText = require('../src/convert-text')
+const openccCvtEpub = require('../src/opencc-convert-epub')
+const openccCvtText = require('../src/opencc-convert-text')
+const zhcCvtEpub = require('../src/zhc-convert-epub')
+const zhcCvtText = require('../src/zhc-convert-text')
 
 const app = express()
 app.use('/static', express.static(path.join(__dirname, 'static')))
@@ -39,23 +41,45 @@ const downloadFile = async (res, fileName, filePath) => {
 			.on('error', reject)
 	)
 }
-app.post('/convert-epub', rateLimit, upload.single('epub'), async (req, res) => {
+app.post('/opencc-convert-epub', rateLimit, upload.single('epub'), async (req, res) => {
 	if (req.file.mimetype !== 'application/epub+zip') {
 		return res.send('檔案並非 epub 類型')
 	}
 	const newName = appendFileName(req.file.originalname, '-converted')
-	await cvtEpub(req.file.path, {
+	await openccCvtEpub(req.file.path, {
 		type: req.body.type
 	})
 	await downloadFile(res, newName, req.file.path)
 	await fs.unlink(req.file.path)
 })
-app.post('/convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
+app.post('/opencc-convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
 	if (req.file.mimetype !== 'text/plain') {
 		return res.send('檔案並非 txt 類型')
 	}
 	const newName = appendFileName(req.file.originalname, '-converted')
-	await cvtText(req.file.path, {
+	await openccCvtText(req.file.path, {
+		type: req.body.type
+	})
+	await downloadFile(res, newName, req.file.path)
+	await fs.unlink(req.file.path)
+})
+app.post('/zhc-convert-epub', rateLimit, upload.single('epub'), async (req, res) => {
+	if (req.file.mimetype !== 'application/epub+zip') {
+		return res.send('檔案並非 epub 類型')
+	}
+	const newName = appendFileName(req.file.originalname, '-converted')
+	await zhcCvtEpub(req.file.path, {
+		type: req.body.type
+	})
+	await downloadFile(res, newName, req.file.path)
+	await fs.unlink(req.file.path)
+})
+app.post('/zhc-convert-txt', rateLimit, upload.single('txt'), async (req, res) => {
+	if (req.file.mimetype !== 'text/plain') {
+		return res.send('檔案並非 txt 類型')
+	}
+	const newName = appendFileName(req.file.originalname, '-converted')
+	await zhcCvtText(req.file.path, {
 		type: req.body.type
 	})
 	await downloadFile(res, newName, req.file.path)
