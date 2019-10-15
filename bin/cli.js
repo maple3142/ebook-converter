@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const path = require('path')
-const cvtEpub = require('../src/convert-epub')
+const cvtEpub = require('../src/opencc-convert-epub')
 
 const args = process.argv.slice(2)
 const [source, dest] = args.slice(0, 2).map(p => path.join(process.cwd(), p))

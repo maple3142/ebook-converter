@@ -30,9 +30,13 @@ module.exports = async (filePath, config) => {
 	const files = (await fs.readdir(textDir))
 		.filter(name => name.endsWith('.xhtml'))
 		.map(name => path.join(textDir, name))
-	const toc = path.join(dir, './OEBPS/toc.ncx')
-	if (await fs.exists(toc)) {
-		files.push(toc)
+	const toc1 = path.join(dir, './toc.ncx')
+	if (await fs.exists(toc1)) {
+		files.push(toc1)
+	}
+	const toc2 = path.join(dir, './OEBPS/toc.ncx')
+	if (await fs.exists(toc2)) {
+		files.push(toc2)
 	}
 	const meta = path.join(dir, './OEBPS/content.opf')
 	if (await fs.exists(meta)) {
