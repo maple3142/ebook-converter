@@ -18,3 +18,7 @@ html(lang='zh-tw')
 				span 原檔案名: #{file.originalName}
 				br
 				span 伺服器目前正在為您轉換中，請稍後。
+				br
+				span 此網頁每 5 秒會自動重新整理。
+			script.
+				setTimeout(location.reload.bind(location), 5000)
