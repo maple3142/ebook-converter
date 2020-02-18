@@ -1,0 +1,93 @@
+doctype html
+html(lang='zh-tw')
+	head
+		meta(charset='UTF-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		meta(http-equiv='X-UA-Compatible' content='ie=edge')
+		meta(name='description' content='線上的 epub/txt 繁簡轉換工具')
+		meta(name='keywords',content='epub,txt,繁簡,繁簡轉換,工具')
+		link(href='/static/style.css' rel='stylesheet')
+		title Epub/Txt 繁簡轉換
+	body
+		form.block.file-form(action='/opencc-convert-epub' method='POST' enctype='multipart/form-data')
+			div
+				label(for='opencc-epub') Epub 檔案(OpenCC):
+				input#opencc-epub(name='epub' type='file' accept='application/epub+zip')
+			div
+				label(for='select-opencc-epub') 轉換模式:&nbsp;
+				select#select-opencc-epub(name='type')
+					option(value='hongKongToSimplified') 香港繁體轉簡體
+					option(value='simplifiedToHongKong') 簡體轉香港繁體
+					option(value='simplifiedToTraditional') 簡體轉繁體
+					option(value='simplifiedToTaiwan' selected='') 簡體轉台灣繁體
+					option(value='simplifiedToTaiwanWithPhrases') 簡體轉台灣繁體(含單字)
+					option(value='traditionalToHongKong') 繁體轉香港繁體
+					option(value='traditionalToSimplified') 繁體轉簡體
+					option(value='traditionalToTaiwan') 繁體轉台灣繁體
+					option(value='taiwanToSimplified') 台灣繁體轉簡體
+					option(value='taiwanToSimplifiedWithPhrases') 台灣繁體轉簡體(含單字)
+			input(type='submit' value='轉換')
+		form.block.file-form(action='/zhc-convert-epub' method='POST' enctype='multipart/form-data')
+			div
+				label(for='zhc-epub') Epub 檔案(繁化姬):
+				input#zhc-epub(name='epub' type='file' accept='application/epub+zip')
+			div
+				label(for='select-zhc-epub') 轉換模式:&nbsp;
+				select#select-zhc-epub(name='type')
+					option(value='Simplified') 簡體化
+					option(value='Traditional') 繁體化
+					option(value='China') 中國化
+					option(value='Hongkong') 香港化
+					option(value='Taiwan' selected='') 台灣化
+					option(value='WikiSimplified') 維基簡體化
+					option(value='WikiTraditional') 維基繁體化
+			input(type='submit' value='轉換')
+		form.block.file-form(action='/opencc-convert-txt' method='POST' enctype='multipart/form-data')
+			div
+				label(for='opencc-txt') Txt 檔案(OpenCC):
+				input#opencc-txt(name='txt' type='file' accept='text/plain')
+			div
+				label(for='select-opencc-txt') 轉換模式:&nbsp;
+				select#select-opencc-txt(name='type')
+					option(value='hongKongToSimplified') 香港繁體轉簡體
+					option(value='simplifiedToHongKong') 簡體轉香港繁體
+					option(value='simplifiedToTraditional') 簡體轉繁體
+					option(value='simplifiedToTaiwan' selected='') 簡體轉台灣繁體
+					option(value='simplifiedToTaiwanWithPhrases') 簡體轉台灣繁體(含單字)
+					option(value='traditionalToHongKong') 繁體轉香港繁體
+					option(value='traditionalToSimplified') 繁體轉簡體
+					option(value='traditionalToTaiwan') 繁體轉台灣繁體
+					option(value='taiwanToSimplified') 台灣繁體轉簡體
+					option(value='taiwanToSimplifiedWithPhrases') 台灣繁體轉簡體(含單字)
+			input(type='submit' value='轉換')
+		form.block.file-form(action='/zhc-convert-txt' method='POST' enctype='multipart/form-data')
+			div
+				label(for='zhc-txt') Txt 檔案(繁化姬):
+				input#zhc-txt(name='txt' type='file' accept='text/plain')
+			div
+				label(for='select-zhc-txt') 轉換模式:&nbsp;
+				select#select-zhc-txt(name='type')
+					option(value='Simplified') 簡體化
+					option(value='Traditional') 繁體化
+					option(value='China') 中國化
+					option(value='Hongkong') 香港化
+					option(value='Taiwan' selected='') 台灣化
+					option(value='WikiSimplified') 維基簡體化
+					option(value='WikiTraditional') 維基繁體化
+			input(type='submit' value='轉換')
+		.block
+			div
+				| 請注意，所有的檔案編碼都會轉換為 UTF-8，無論原本的檔案是 BIG-5,
+				| GBK 或是其他的都沒差
+			div
+				a(href='https://github.com/maple3142/ebook-converter') GitHub
+		.block
+			div
+				| 另外，關於
+				a(href='https://zhconvert.org/') 繁化姬
+				| 的轉換部分是在後台調用此網站所提供的
+				a(href='https://docs.zhconvert.org/api/getting-started/') API
+				| 的，速度就我自己測試是比
+				a(href='https://github.com/BYVoid/OpenCC') OpenCC
+				| 轉換還要慢，而品質就由請自己體會了。
+		script(src='/static/script.js')

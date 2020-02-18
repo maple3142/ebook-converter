@@ -17,6 +17,7 @@
 		"iconv-lite": "^0.5.0",
 		"multer": "^1.4.2",
 		"node-opencc": "^2.0.1",
+		"pug": "^2.0.4",
 		"rate-limiter-flexible": "^1.1.1",
 		"tmp-promise": "^2.0.2",
 		"unzipper": "^0.10.5",
