@@ -176,8 +176,11 @@ app.post(
 setInterval(() => {
 	const now = Date.now()
 	for (const [key, value] of Object.entries(files)) {
-		if (!!value.generated && value.generated - now >= 15 * 60 * 1000) {
-			// delete the file after 15 minutes
+		if (
+			(!!value.generated && value.generated - now >= 15 * 60 * 1000) ||
+			value.error
+		) {
+			// delete the file after 15 minutes or errored
 			delete files[key]
 			fs.unlink(value.path)
 		}
