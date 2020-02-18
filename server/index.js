@@ -8,6 +8,7 @@ const openccCvtText = require('../src/opencc-convert-text')
 const zhcCvtEpub = require('../src/zhc-convert-epub')
 const zhcCvtText = require('../src/zhc-convert-text')
 
+const DELETE_DELAY = 15 * 60 * 1000 // 15 mins
 const app = express()
 app.set('view engine', 'pug')
 app.set('views', __dirname)
@@ -79,7 +80,7 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		openccCvtEpub(req.file.path, {
+		await openccCvtEpub(req.file.path, {
 			type: req.body.type
 		})
 			.then(() => {
@@ -89,6 +90,10 @@ app.post(
 			.catch(() => {
 				file.error = true
 			})
+		setTimeout(() => {
+			delete files[req.file.filename]
+			fs.unlink(req.file.path)
+		}, DELETE_DELAY)
 	}
 )
 app.post(
@@ -106,7 +111,7 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		openccCvtText(req.file.path, {
+		await openccCvtText(req.file.path, {
 			type: req.body.type
 		})
 			.then(() => {
@@ -116,6 +121,10 @@ app.post(
 			.catch(() => {
 				file.error = true
 			})
+		setTimeout(() => {
+			delete files[req.file.filename]
+			fs.unlink(req.file.path)
+		}, DELETE_DELAY)
 	}
 )
 app.post(
@@ -133,7 +142,7 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		zhcCvtEpub(req.file.path, {
+		await zhcCvtEpub(req.file.path, {
 			type: req.body.type
 		})
 			.then(() => {
@@ -143,6 +152,10 @@ app.post(
 			.catch(() => {
 				file.error = true
 			})
+		setTimeout(() => {
+			delete files[req.file.filename]
+			fs.unlink(req.file.path)
+		}, DELETE_DELAY)
 	}
 )
 app.post(
@@ -160,7 +173,7 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		zhcCvtText(req.file.path, {
+		await zhcCvtText(req.file.path, {
 			type: req.body.type
 		})
 			.then(() => {
@@ -170,22 +183,12 @@ app.post(
 			.catch(() => {
 				file.error = true
 			})
+		setTimeout(() => {
+			delete files[req.file.filename]
+			fs.unlink(req.file.path)
+		}, DELETE_DELAY)
 	}
 )
-
-setInterval(() => {
-	const now = Date.now()
-	for (const [key, value] of Object.entries(files)) {
-		if (
-			(!!value.generated && value.generated - now >= 15 * 60 * 1000) ||
-			value.error
-		) {
-			// delete the file after 15 minutes or errored
-			delete files[key]
-			fs.unlink(value.path)
-		}
-	}
-}, 60 * 1000) // runs every minutes
 
 const PORT = process.env.PORT || 8763
 app.listen(PORT, () =>
