@@ -69,7 +69,7 @@ app.post(
 	rateLimit,
 	upload.single('epub'),
 	async (req, res) => {
-		if (req.file.mimetype !== 'application/epub+zip') {
+		if (!req.file || req.file.mimetype !== 'application/epub+zip') {
 			return res.send('檔案並非 epub 類型')
 		}
 		const file = (files[req.file.filename] = {
@@ -96,7 +96,7 @@ app.post(
 	rateLimit,
 	upload.single('txt'),
 	async (req, res) => {
-		if (req.file.mimetype !== 'text/plain') {
+		if (!req.file || req.file.mimetype !== 'text/plain') {
 			return res.send('檔案並非 txt 類型')
 		}
 		const file = (files[req.file.filename] = {
@@ -123,7 +123,7 @@ app.post(
 	rateLimit,
 	upload.single('epub'),
 	async (req, res) => {
-		if (req.file.mimetype !== 'application/epub+zip') {
+		if (!req.file || req.file.mimetype !== 'application/epub+zip') {
 			return res.send('檔案並非 epub 類型')
 		}
 		const file = (files[req.file.filename] = {
@@ -150,7 +150,7 @@ app.post(
 	rateLimit,
 	upload.single('txt'),
 	async (req, res) => {
-		if (req.file.mimetype !== 'text/plain') {
+		if (!req.file || req.file.mimetype !== 'text/plain') {
 			return res.send('檔案並非 txt 類型')
 		}
 		const file = (files[req.file.filename] = {
