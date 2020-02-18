@@ -79,11 +79,16 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		await openccCvtEpub(req.file.path, {
+		openccCvtEpub(req.file.path, {
 			type: req.body.type
 		})
-		file.done = true
-		file.generated = Date.now()
+			.then(() => {
+				file.done = true
+				file.generated = Date.now()
+			})
+			.catch(() => {
+				file.error = true
+			})
 	}
 )
 app.post(
@@ -101,11 +106,16 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		await openccCvtText(req.file.path, {
+		openccCvtText(req.file.path, {
 			type: req.body.type
 		})
-		file.done = true
-		file.generated = Date.now()
+			.then(() => {
+				file.done = true
+				file.generated = Date.now()
+			})
+			.catch(() => {
+				file.error = true
+			})
 	}
 )
 app.post(
@@ -123,11 +133,16 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		await zhcCvtEpub(req.file.path, {
+		zhcCvtEpub(req.file.path, {
 			type: req.body.type
 		})
-		file.done = true
-		file.generated = Date.now()
+			.then(() => {
+				file.done = true
+				file.generated = Date.now()
+			})
+			.catch(() => {
+				file.error = true
+			})
 	}
 )
 app.post(
@@ -145,11 +160,16 @@ app.post(
 			done: false
 		})
 		res.redirect(`/info/${req.file.filename}`)
-		await zhcCvtText(req.file.path, {
+		zhcCvtText(req.file.path, {
 			type: req.body.type
 		})
-		file.done = true
-		file.generated = Date.now()
+			.then(() => {
+				file.done = true
+				file.generated = Date.now()
+			})
+			.catch(() => {
+				file.error = true
+			})
 	}
 )
 

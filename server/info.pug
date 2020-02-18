@@ -6,7 +6,14 @@ html(lang='zh-tw')
 		title #{file.originalName} 轉換資訊
 		link(href='/static/style.css' rel='stylesheet')
 	body
-		if file.done
+		if file.error
+			div(class='block')
+				span 原檔案名: #{file.originalName}
+				br
+				span 未知緣由導致了檔案轉換失敗。
+				br
+				span 若您是使用繁化姬轉換的，可能是因為檔案大小太大才失敗的，可考慮改用 OpenCC。
+		else if file.done
 			div(class='block')
 				span 原檔案名: #{file.originalName}
 				br
