@@ -15,7 +15,6 @@ app.use('/static', express.static(path.join(__dirname, 'static')))
 const uplDir = path.join(__dirname, 'uploads')
 const upload = multer({ dest: uplDir })
 
-const index = path.join(__dirname, './index.html')
 app.get('/', (req, res) => {
 	res.render('index')
 })
@@ -45,11 +44,13 @@ const downloadFile = async (res, fileName, filePath) => {
 }
 const files = {}
 app.get('/files/:id', (req, res) => {
-	const { id } = req.params
-	if (!(id in files)) {
+	const file = files[req.params.id]
+	if (!file) {
 		return res.status(404).send("File doesn't exist.")
 	}
-	const file = files[id]
+	if (!file.done) {
+		return res.status(404).send("File is'n ready yet.")
+	}
 	downloadFile(
 		res,
 		appendFileName(file.originalName, '-converted'),
@@ -57,11 +58,11 @@ app.get('/files/:id', (req, res) => {
 	)
 })
 app.get('/info/:id', (req, res) => {
-	const { id } = req.params
-	if (!(id in files)) {
+	const file = files[req.params.id]
+	if (!file) {
 		return res.status(404).send("File doesn't exist.")
 	}
-	res.render('info', { id, file: files[id] })
+	res.render('info', { id: req.params.id, file })
 })
 app.post(
 	'/opencc-convert-epub',
@@ -71,15 +72,18 @@ app.post(
 		if (req.file.mimetype !== 'application/epub+zip') {
 			return res.send('檔案並非 epub 類型')
 		}
+		const file = (files[req.file.filename] = {
+			originalName: req.file.originalname,
+			path: req.file.path,
+			generated: Date.now(),
+			done: false
+		})
+		res.redirect(`/info/${req.file.filename}`)
 		await openccCvtEpub(req.file.path, {
 			type: req.body.type
 		})
-		files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now()
-		}
-		res.redirect(`/info/${req.file.filename}`)
+		file.done = true
+		file.generated = Date.now()
 	}
 )
 app.post(
@@ -90,15 +94,18 @@ app.post(
 		if (req.file.mimetype !== 'text/plain') {
 			return res.send('檔案並非 txt 類型')
 		}
+		const file = (files[req.file.filename] = {
+			originalName: req.file.originalname,
+			path: req.file.path,
+			generated: Date.now(),
+			done: false
+		})
+		res.redirect(`/info/${req.file.filename}`)
 		await openccCvtText(req.file.path, {
 			type: req.body.type
 		})
-		files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now()
-		}
-		res.redirect(`/info/${req.file.filename}`)
+		file.done = true
+		file.generated = Date.now()
 	}
 )
 app.post(
@@ -109,15 +116,18 @@ app.post(
 		if (req.file.mimetype !== 'application/epub+zip') {
 			return res.send('檔案並非 epub 類型')
 		}
+		const file = (files[req.file.filename] = {
+			originalName: req.file.originalname,
+			path: req.file.path,
+			generated: Date.now(),
+			done: false
+		})
+		res.redirect(`/info/${req.file.filename}`)
 		await zhcCvtEpub(req.file.path, {
 			type: req.body.type
 		})
-		files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now()
-		}
-		res.redirect(`/info/${req.file.filename}`)
+		file.done = true
+		file.generated = Date.now()
 	}
 )
 app.post(
@@ -128,22 +138,25 @@ app.post(
 		if (req.file.mimetype !== 'text/plain') {
 			return res.send('檔案並非 txt 類型')
 		}
+		const file = (files[req.file.filename] = {
+			originalName: req.file.originalname,
+			path: req.file.path,
+			generated: Date.now(),
+			done: false
+		})
+		res.redirect(`/info/${req.file.filename}`)
 		await zhcCvtText(req.file.path, {
 			type: req.body.type
 		})
-		files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now()
-		}
-		res.redirect(`/info/${req.file.filename}`)
+		file.done = true
+		file.generated = Date.now()
 	}
 )
 
 setInterval(() => {
 	const now = Date.now()
 	for (const [key, value] of Object.entries(files)) {
-		if (value.generated - now >= 15 * 60 * 1000) {
+		if (!!value.generated && value.generated - now >= 15 * 60 * 1000) {
 			// delete the file after 15 minutes
 			delete files[key]
 			fs.unlink(value.path)

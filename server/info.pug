@@ -3,12 +3,18 @@ html(lang='zh-tw')
 	head
 		meta(charset='UTF-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
-		title 轉換的檔案 #{file.originalName}
+		title #{file.originalName} 轉換資訊
 		link(href='/static/style.css' rel='stylesheet')
 	body
-		div(class='block')
-			span 原檔案名: #{file.originalName}
-			br
-			a(href='/files/'+id) 下載連結
-			br
-			span 此檔案將會在伺服器上留存 15 分鐘，過後自動刪除
+		if file.done
+			div(class='block')
+				span 原檔案名: #{file.originalName}
+				br
+				a(href='/files/'+id) 下載連結
+				br
+				span 此檔案將會在伺服器上留存 15 分鐘，過後自動刪除
+		else
+			div(class='block')
+				span 原檔案名: #{file.originalName}
+				br
+				span 伺服器目前正在為您轉換中，請稍後。
