@@ -17,7 +17,7 @@ const uplDir = path.join(__dirname, 'uploads')
 const upload = multer({ dest: uplDir })
 
 app.get('/', (req, res) => {
-	res.set('Cache-Control', 'max-age=86400').render('index')
+	res.render('index')
 })
 const favicon = path.join(__dirname, '/static/favicon.ico')
 app.get('/favicon.ico', (req, res) => {
