@@ -12,7 +12,7 @@ html(lang='zh-tw')
 		form.block.file-form(action='/opencc-convert-epub' method='POST' enctype='multipart/form-data')
 			div
 				label(for='opencc-epub') Epub 檔案(OpenCC):
-				input#opencc-epub(name='epub' type='file' accept='application/epub+zip')
+				input#opencc-epub(name='file' type='file' accept='application/epub+zip')
 			div
 				label(for='select-opencc-epub') 轉換模式:&nbsp;
 				select#select-opencc-epub(name='type')
@@ -27,10 +27,11 @@ html(lang='zh-tw')
 					option(value='taiwanToSimplified') 台灣繁體轉簡體
 					option(value='taiwanToSimplifiedWithPhrases') 台灣繁體轉簡體(含單字)
 			input(type='submit' value='轉換')
+			input(name='captcha' type='text' hidden)
 		form.block.file-form(action='/zhc-convert-epub' method='POST' enctype='multipart/form-data')
 			div
 				label(for='zhc-epub') Epub 檔案(繁化姬):
-				input#zhc-epub(name='epub' type='file' accept='application/epub+zip')
+				input#zhc-epub(name='file' type='file' accept='application/epub+zip')
 			div
 				label(for='select-zhc-epub') 轉換模式:&nbsp;
 				select#select-zhc-epub(name='type')
@@ -42,10 +43,11 @@ html(lang='zh-tw')
 					option(value='WikiSimplified') 維基簡體化
 					option(value='WikiTraditional') 維基繁體化
 			input(type='submit' value='轉換')
+			input(name='captcha' type='text' hidden)
 		form.block.file-form(action='/opencc-convert-txt' method='POST' enctype='multipart/form-data')
 			div
 				label(for='opencc-txt') Txt 檔案(OpenCC):
-				input#opencc-txt(name='txt' type='file' accept='text/plain')
+				input#opencc-txt(name='file' type='file' accept='text/plain')
 			div
 				label(for='select-opencc-txt') 轉換模式:&nbsp;
 				select#select-opencc-txt(name='type')
@@ -60,10 +62,11 @@ html(lang='zh-tw')
 					option(value='taiwanToSimplified') 台灣繁體轉簡體
 					option(value='taiwanToSimplifiedWithPhrases') 台灣繁體轉簡體(含單字)
 			input(type='submit' value='轉換')
+			input(name='captcha' type='text' hidden)
 		form.block.file-form(action='/zhc-convert-txt' method='POST' enctype='multipart/form-data')
 			div
 				label(for='zhc-txt') Txt 檔案(繁化姬):
-				input#zhc-txt(name='txt' type='file' accept='text/plain')
+				input#zhc-txt(name='file' type='file' accept='text/plain')
 			div
 				label(for='select-zhc-txt') 轉換模式:&nbsp;
 				select#select-zhc-txt(name='type')
@@ -75,6 +78,8 @@ html(lang='zh-tw')
 					option(value='WikiSimplified') 維基簡體化
 					option(value='WikiTraditional') 維基繁體化
 			input(type='submit' value='轉換')
+			input(name='captcha' type='text' hidden)
+		.block.flex.center#hcaptcha-container
 		.block
 			div
 				| 請注意，所有的檔案編碼都會轉換為 UTF-8，無論原本的檔案是 BIG-5,
@@ -91,3 +96,4 @@ html(lang='zh-tw')
 				a(href='https://github.com/BYVoid/OpenCC') OpenCC
 				| 轉換還要慢，而品質就由請自己體會了。
 		script(src='/static/script.js')
+		script(src="https://hcaptcha.com/1/api.js?onload=hcaptchaLoaded&render=explicit" async defer)

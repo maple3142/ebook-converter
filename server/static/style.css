@@ -9,6 +9,13 @@ body {
 	margin: 2px;
 	width: 350px;
 }
+.flex {
+	display: flex;
+}
+.center {
+	justify-content: center;
+	align-items: center;
+}
 @media (max-width: 364px) {
 	.block {
 		width: 100%;

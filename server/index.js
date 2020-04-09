@@ -1,8 +1,11 @@
 const path = require('path')
+require('dotenv').config({
+	path: path.join(__dirname, '../.env')
+})
 const fs = require('fs-extra')
 const express = require('express')
 const multer = require('multer')
-const rateLimit = require('./ratelimit')
+const hcaptcha = require('./hcaptcha')
 const openccCvtEpub = require('../src/opencc-convert-epub')
 const openccCvtText = require('../src/opencc-convert-text')
 const zhcCvtEpub = require('../src/zhc-convert-epub')
@@ -67,8 +70,8 @@ app.get('/info/:id', (req, res) => {
 })
 app.post(
 	'/opencc-convert-epub',
-	rateLimit,
-	upload.single('epub'),
+	upload.single('file'),
+	hcaptcha,
 	async (req, res) => {
 		if (!req.file || req.file.mimetype !== 'application/epub+zip') {
 			return res.send('檔案並非 epub 類型')
@@ -98,8 +101,8 @@ app.post(
 )
 app.post(
 	'/opencc-convert-txt',
-	rateLimit,
-	upload.single('txt'),
+	upload.single('file'),
+	hcaptcha,
 	async (req, res) => {
 		if (!req.file || req.file.mimetype !== 'text/plain') {
 			return res.send('檔案並非 txt 類型')
@@ -129,8 +132,8 @@ app.post(
 )
 app.post(
 	'/zhc-convert-epub',
-	rateLimit,
-	upload.single('epub'),
+	upload.single('file'),
+	hcaptcha,
 	async (req, res) => {
 		if (!req.file || req.file.mimetype !== 'application/epub+zip') {
 			return res.send('檔案並非 epub 類型')
@@ -160,8 +163,8 @@ app.post(
 )
 app.post(
 	'/zhc-convert-txt',
-	rateLimit,
-	upload.single('txt'),
+	upload.single('file'),
+	hcaptcha,
 	async (req, res) => {
 		if (!req.file || req.file.mimetype !== 'text/plain') {
 			return res.send('檔案並非 txt 類型')
