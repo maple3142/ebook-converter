@@ -1,10 +1,12 @@
-FROM node:10
-WORKDIR /usr/src/app
-
-COPY package*.json ./
+FROM node:12-alpine AS build
+WORKDIR /app
+COPY package.json .
 RUN yarn
-
 COPY . .
-EXPOSE 8080
+
+FROM gcr.io/distroless/nodejs:12
+WORKDIR /app
+COPY --from=build /app .
 ENV PORT=8080
-CMD ["yarn", "start"]
+EXPOSE 8080
+CMD ["server/index.js"]
