@@ -87,5 +87,5 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-server/uploads
+server/uploads/*
 *.epub
