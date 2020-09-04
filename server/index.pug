@@ -8,6 +8,7 @@ html(lang='zh-tw')
 		meta(name='keywords',content='epub,txt,ebook,電子書,繁簡,繁簡轉換,工具,繁體,簡體')
 		link(href='/static/style.css' rel='stylesheet')
 		title epub/txt 電子書繁簡轉換
+		include ads.pug
 	body
 		form.block.file-form(action='/opencc-convert-epub' method='POST' enctype='multipart/form-data')
 			div
@@ -79,6 +80,8 @@ html(lang='zh-tw')
 					option(value='WikiTraditional') 維基繁體化
 			input(type='submit' value='轉換')
 			input(name='captcha' type='text' hidden)
+		.block
+			+adsblock
 		.block.flex.center#hcaptcha-container
 		.block
 			div
