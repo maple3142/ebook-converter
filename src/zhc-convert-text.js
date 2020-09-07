@@ -3,7 +3,15 @@ const zhc = require('./zhconvert')
 const iconv = require('iconv-lite')
 const chardet = require('chardet')
 
-const TYPES = ['Simplified', 'Traditional', 'China', 'Hongkong', 'Taiwan', 'WikiSimplified', 'WikiTraditional']
+const TYPES = [
+	'Simplified',
+	'Traditional',
+	'China',
+	'Hongkong',
+	'Taiwan',
+	'WikiSimplified',
+	'WikiTraditional'
+]
 
 /**
  * Config object:
@@ -15,7 +23,7 @@ const TYPES = ['Simplified', 'Traditional', 'China', 'Hongkong', 'Taiwan', 'Wiki
  */
 module.exports = async (filePath, config) => {
 	const buf = await fs.readFile(filePath)
-	if(!TYPES.includes(config.type)){
+	if (!TYPES.includes(config.type)) {
 		throw new Error('Invalid config.type value.')
 	}
 	const text = iconv.decode(buf, chardet.detect(buf))
