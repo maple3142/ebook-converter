@@ -9,11 +9,13 @@ const zipDir = require('./zip-dir')
 /**
  * Config object:
  * {
- *   type: '',
+ *   type: {
+ *     from: '',
+ *     to: ''
+ *   },
  *   dest: null // default to filePath
  * }
- * Valid value of config.type: 'hongKongToSimplified', 'simplifiedToHongKong', 'simplifiedToTraditional', 'simplifiedToTaiwan', 'simplifiedToTaiwanWithPhrases',
- *   'traditionalToHongKong', 'traditionalToSimplified', 'traditionalToTaiwan', 'taiwanToSimplified', 'taiwanToSimplifiedWithPhrases'
+ * Valid value of config.type.{from, to}: 't', 'tw', 'twp', 'hk', 'cn', 'jp'
  */
 module.exports = async (filePath, config) => {
 	const { path: dir, cleanup } = await tmp.dir({ unsafeCleanup: true })

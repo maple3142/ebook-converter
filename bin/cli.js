@@ -6,6 +6,9 @@ const args = process.argv.slice(2)
 const [source, dest] = args.slice(0, 2).map(p => path.join(process.cwd(), p))
 
 cvtEpub(source, {
-	type: args[2] || 'simplifiedToTaiwan',
+	type: {
+		from: args[2] || 'cn',
+		to: args[3] || 'tw'
+	},
 	dest
 }).then(() => console.log('finished'))
