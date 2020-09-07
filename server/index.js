@@ -24,7 +24,9 @@ app.get('/', (req, res) => {
 })
 const favicon = path.join(__dirname, '/static/favicon.ico')
 app.get('/favicon.ico', (req, res) => {
-	res.sendFile(favicon)
+	res.sendFile(favicon, {
+		hcaptcha: !!process.env.HCAPTCHA_SECRET_KEY
+	})
 })
 
 const appendFileName = (originalName, text) => {

@@ -16,14 +16,15 @@ html(lang='zh-tw')
 				input#opencc-epub(name='file' type='file' accept='application/epub+zip')
 			div
 				label(for='select-opencc-epub') 轉換模式:&nbsp;
-				select#select-opencc-epub(name='type-from')
+				select#select-opencc-epub-from(name='type-from')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp') 台灣繁體與用詞
 					option(value='hk') 香港繁體
 					option(value='cn' selected) 大陸簡體
 					option(value='jp') 日本新字體
-				select#select-opencc-epub(name='type-to')
+				span 到
+				select#select-opencc-epub-to(name='type-to')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp' selected) 台灣繁體與用詞
@@ -38,14 +39,15 @@ html(lang='zh-tw')
 				input#opencc-txt(name='file' type='file' accept='text/plain')
 			div
 				label(for='select-opencc-txt') 轉換模式:&nbsp;
-				select#select-opencc-epub(name='type-from')
+				select#select-opencc-epub-from(name='type-from')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp') 台灣繁體與用詞
 					option(value='hk') 香港繁體
 					option(value='cn' selected) 大陸簡體
 					option(value='jp') 日本新字體
-				select#select-opencc-epub(name='type-to')
+				span 到
+				select#select-opencc-epub-to(name='type-to')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp' selected) 台灣繁體與用詞
@@ -88,7 +90,8 @@ html(lang='zh-tw')
 			input(name='captcha' type='text' hidden)
 		.block
 			+adsblock
-		.block.flex.center#hcaptcha-container
+		if hcaptcha
+			.block.flex.center#hcaptcha-container
 		.block
 			div
 				| 請注意，所有的檔案編碼都會轉換為 UTF-8，無論原本的檔案是 BIG-5,
@@ -105,4 +108,5 @@ html(lang='zh-tw')
 				a(href='https://github.com/BYVoid/OpenCC') OpenCC
 				| 轉換還要慢，而品質就由請自己體會了。
 		script(src='/static/script.js')
-		script(src="https://hcaptcha.com/1/api.js?onload=hcaptchaLoaded&render=explicit" async defer)
+		if hcaptcha
+			script(src="https://hcaptcha.com/1/api.js?onload=hcaptchaLoaded&render=explicit" async defer)
