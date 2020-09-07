@@ -8,21 +8,21 @@ html(lang='zh-tw')
 		include ads.pug
 	body
 		if file.error
-			div(class='block')
+			.block
 				span 原檔案名: #{file.originalName}
 				br
 				span 未知緣由導致了檔案轉換失敗。
 				br
 				span 若您是使用繁化姬轉換的，可能是因為檔案大小太大才失敗的，可考慮改用 OpenCC。
 		else if file.done
-			div(class='block')
+			.block
 				span 原檔案名: #{file.originalName}
 				br
 				a(href='/files/'+id) 下載連結
 				br
 				span 此檔案將會在伺服器上留存 15 分鐘，過後自動刪除
 		else
-			div(class='block')
+			.block
 				span 原檔案名: #{file.originalName}
 				br
 				span 伺服器目前正在為您轉換中，請稍後。
@@ -30,3 +30,5 @@ html(lang='zh-tw')
 				span 此網頁每 5 秒會自動重新整理。
 			script.
 				setTimeout(location.reload.bind(location), 5000)
+		.block
+			+adsblock
