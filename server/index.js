@@ -1,7 +1,4 @@
 const path = require('path')
-require('dotenv').config({
-	path: path.join(__dirname, '../.env')
-})
 const fs = require('fs-extra')
 const express = require('express')
 const multer = require('multer')
@@ -20,13 +17,13 @@ const uplDir = path.join(__dirname, 'uploads')
 const upload = multer({ dest: uplDir })
 
 app.get('/', (req, res) => {
-	res.render('index')
+	res.render('index', {
+		hcaptcha: typeof process.env.HCAPTCHA_SECRET_KEY !== 'undefined'
+	})
 })
 const favicon = path.join(__dirname, '/static/favicon.ico')
 app.get('/favicon.ico', (req, res) => {
-	res.sendFile(favicon, {
-		hcaptcha: !!process.env.HCAPTCHA_SECRET_KEY
-	})
+	res.sendFile(favicon)
 })
 
 const appendFileName = (originalName, text) => {
