@@ -84,7 +84,10 @@ app.post(
 		})
 		res.redirect(`/info/${req.file.filename}`)
 		await openccCvtEpub(req.file.path, {
-			type: req.body.type
+			type: {
+				from: req.body['type-from'],
+				to: req.body['type-to']
+			}
 		})
 			.then(() => {
 				file.done = true
@@ -115,7 +118,10 @@ app.post(
 		})
 		res.redirect(`/info/${req.file.filename}`)
 		await openccCvtText(req.file.path, {
-			type: req.body.type
+			type: {
+				from: req.body['type-from'],
+				to: req.body['type-to']
+			}
 		})
 			.then(() => {
 				file.done = true
