@@ -10,13 +10,14 @@ html(lang='zh-tw')
 		title epub/txt 電子書繁簡轉換
 		include ads.pug
 	body
+		h1 epub/txt 電子書繁簡轉換
 		form.block.file-form(action='/opencc-convert-epub' method='POST' enctype='multipart/form-data')
 			div
 				label(for='opencc-epub') Epub 檔案(OpenCC):
 				input#opencc-epub(name='file' type='file' accept='application/epub+zip')
 			div
-				label(for='select-opencc-epub') 轉換模式:&nbsp;
-				select#select-opencc-epub-from(name='type-from')
+				label(id='opencc-epub-convert-mode-label') 轉換模式:&nbsp;
+				select#select-opencc-epub-from(name='type-from' aria-labelledby='opencc-epub-convert-mode-label')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp') 台灣繁體與用詞
@@ -24,7 +25,7 @@ html(lang='zh-tw')
 					option(value='cn' selected) 大陸簡體
 					option(value='jp') 日本新字體
 				span 到
-				select#select-opencc-epub-to(name='type-to')
+				select#select-opencc-epub-to(name='type-to' aria-labelledby='opencc-epub-convert-mode-label')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp' selected) 台灣繁體與用詞
@@ -38,8 +39,8 @@ html(lang='zh-tw')
 				label(for='opencc-txt') Txt 檔案(OpenCC):
 				input#opencc-txt(name='file' type='file' accept='text/plain')
 			div
-				label(for='select-opencc-txt') 轉換模式:&nbsp;
-				select#select-opencc-epub-from(name='type-from')
+				label(id='opencc-txt-convert-mode-label') 轉換模式:&nbsp;
+				select#select-opencc-txt-from(name='type-from' aria-labelledby='opencc-txt-convert-mode-label')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp') 台灣繁體與用詞
@@ -47,7 +48,7 @@ html(lang='zh-tw')
 					option(value='cn' selected) 大陸簡體
 					option(value='jp') 日本新字體
 				span 到
-				select#select-opencc-epub-to(name='type-to')
+				select#select-opencc-txt-to(name='type-to' aria-labelledby='opencc-txt-convert-mode-label')
 					option(value='t') OpenCC 繁體
 					option(value='tw') 台灣繁體
 					option(value='twp' selected) 台灣繁體與用詞
