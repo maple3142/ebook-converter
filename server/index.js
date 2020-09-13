@@ -49,10 +49,10 @@ const files = {}
 app.get('/files/:id', (req, res) => {
 	const file = files[req.params.id]
 	if (!file) {
-		return res.status(404).send("File doesn't exist.")
+		return res.status(404).send('找不到檔案')
 	}
 	if (!file.done) {
-		return res.status(404).send("File is'n ready yet.")
+		return res.status(404).send('檔案還沒準備完成')
 	}
 	downloadFile(
 		res,
@@ -63,7 +63,7 @@ app.get('/files/:id', (req, res) => {
 app.get('/info/:id', (req, res) => {
 	const file = files[req.params.id]
 	if (!file) {
-		return res.status(404).send("File doesn't exist.")
+		res.render('info', { file: null })
 	}
 	res.render('info', { id: req.params.id, file })
 })

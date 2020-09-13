@@ -3,11 +3,17 @@ html(lang='zh-tw')
 	head
 		meta(charset='UTF-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
-		title #{file.originalName} 轉換資訊
+		if !file
+			title 找不到檔案
+		else
+			title #{file.originalName} 轉換資訊
 		link(href='/static/style.css' rel='stylesheet')
 		include ads.pug
 	body
-		if file.error
+		if !file
+			.block
+				span 找不到檔案
+		else if file.error
 			.block
 				span 原檔案名: #{file.originalName}
 				br
