@@ -38,14 +38,10 @@ const downloadFile = async (res, fileName, filePath) => {
 	res.setHeader('X-File-Name', encodeURIComponent(fileName))
 	res.attachment(fileName).type('epub')
 	return new Promise((resolve, reject) =>
-		fs
-			.createReadStream(filePath)
-			.pipe(res)
-			.on('finish', resolve)
-			.on('error', reject)
+		fs.createReadStream(filePath).pipe(res).on('finish', resolve).on('error', reject)
 	)
 }
-const files = {}
+const files = Object.create(null)
 app.get('/files/:id', (req, res) => {
 	const file = files[req.params.id]
 	if (!file) {
@@ -54,11 +50,7 @@ app.get('/files/:id', (req, res) => {
 	if (!file.done) {
 		return res.status(404).send('檔案還沒準備完成')
 	}
-	downloadFile(
-		res,
-		appendFileName(file.originalName, '-converted'),
-		file.path
-	)
+	downloadFile(res, appendFileName(file.originalName, '-converted'), file.path)
 })
 app.get('/info/:id', (req, res) => {
 	const file = files[req.params.id]
@@ -67,138 +59,124 @@ app.get('/info/:id', (req, res) => {
 	}
 	res.render('info', { id: req.params.id, file })
 })
-app.post(
-	'/opencc-convert-epub',
-	upload.single('file'),
-	hcaptcha,
-	async (req, res) => {
-		if (!req.file || req.file.mimetype !== 'application/epub+zip') {
-			return res.send('檔案並非 epub 類型')
-		}
-		const file = (files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now(),
-			done: false
-		})
-		res.redirect(`/info/${req.file.filename}`)
-		await openccCvtEpub(req.file.path, {
-			type: {
-				from: req.body['type-from'],
-				to: req.body['type-to']
-			}
-		})
-			.then(() => {
-				file.done = true
-				file.generated = Date.now()
-			})
-			.catch(() => {
-				file.error = true
-			})
-		setTimeout(() => {
-			delete files[req.file.filename]
-			fs.unlink(req.file.path)
-		}, DELETE_DELAY)
+app.post('/opencc-convert-epub', upload.single('file'), hcaptcha, async (req, res) => {
+	if (!req.file || req.file.mimetype !== 'application/epub+zip') {
+		return res.send('檔案並非 epub 類型')
 	}
-)
-app.post(
-	'/opencc-convert-txt',
-	upload.single('file'),
-	hcaptcha,
-	async (req, res) => {
-		if (!req.file || req.file.mimetype !== 'text/plain') {
-			return res.send('檔案並非 txt 類型')
+	const fileId = req.file.filename
+	const file = (files[fileId] = {
+		originalName: req.file.originalname,
+		path: req.file.path,
+		generated: Date.now(),
+		done: false
+	})
+	res.redirect(`/info/${fileId}`)
+	await openccCvtEpub(file.path, {
+		type: {
+			from: req.body['type-from'],
+			to: req.body['type-to']
 		}
-		const file = (files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now(),
-			done: false
+	})
+		.then(() => {
+			file.done = true
+			file.generated = Date.now()
 		})
-		res.redirect(`/info/${req.file.filename}`)
-		await openccCvtText(req.file.path, {
-			type: {
-				from: req.body['type-from'],
-				to: req.body['type-to']
-			}
+		.catch(() => {
+			file.error = true
 		})
-			.then(() => {
-				file.done = true
-				file.generated = Date.now()
-			})
-			.catch(() => {
-				file.error = true
-			})
-		setTimeout(() => {
-			delete files[req.file.filename]
-			fs.unlink(req.file.path)
-		}, DELETE_DELAY)
+	setTimeout(() => {
+		const file = files[fileId]
+		fs.unlink(file.path)
+		delete files[fileId]
+	}, DELETE_DELAY)
+})
+app.post('/opencc-convert-txt', upload.single('file'), hcaptcha, async (req, res) => {
+	if (!req.file || req.file.mimetype !== 'text/plain') {
+		return res.send('檔案並非 txt 類型')
 	}
-)
-app.post(
-	'/zhc-convert-epub',
-	upload.single('file'),
-	hcaptcha,
-	async (req, res) => {
-		if (!req.file || req.file.mimetype !== 'application/epub+zip') {
-			return res.send('檔案並非 epub 類型')
+	const fileId = req.file.filename
+	const file = (files[fileId] = {
+		originalName: req.file.originalname,
+		path: req.file.path,
+		generated: Date.now(),
+		done: false
+	})
+	res.redirect(`/info/${fileId}`)
+	await openccCvtText(file.path, {
+		type: {
+			from: req.body['type-from'],
+			to: req.body['type-to']
 		}
-		const file = (files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now(),
-			done: false
+	})
+		.then(() => {
+			file.done = true
+			file.generated = Date.now()
 		})
-		res.redirect(`/info/${req.file.filename}`)
-		await zhcCvtEpub(req.file.path, {
-			type: req.body.type
+		.catch(() => {
+			file.error = true
 		})
-			.then(() => {
-				file.done = true
-				file.generated = Date.now()
-			})
-			.catch(() => {
-				file.error = true
-			})
-		setTimeout(() => {
-			delete files[req.file.filename]
-			fs.unlink(req.file.path)
-		}, DELETE_DELAY)
+	setTimeout(() => {
+		const file = files[fileId]
+		fs.unlink(file.path)
+		delete files[fileId]
+	}, DELETE_DELAY)
+})
+app.post('/zhc-convert-epub', upload.single('file'), hcaptcha, async (req, res) => {
+	if (!req.file || req.file.mimetype !== 'application/epub+zip') {
+		return res.send('檔案並非 epub 類型')
 	}
-)
-app.post(
-	'/zhc-convert-txt',
-	upload.single('file'),
-	hcaptcha,
-	async (req, res) => {
-		if (!req.file || req.file.mimetype !== 'text/plain') {
-			return res.send('檔案並非 txt 類型')
-		}
-		const file = (files[req.file.filename] = {
-			originalName: req.file.originalname,
-			path: req.file.path,
-			generated: Date.now(),
-			done: false
+	const fileId = req.file.filename
+	const file = (files[fileId] = {
+		originalName: req.file.originalname,
+		path: req.file.path,
+		generated: Date.now(),
+		done: false
+	})
+	res.redirect(`/info/${fileId}`)
+	await zhcCvtEpub(file.path, {
+		type: req.body.type
+	})
+		.then(() => {
+			file.done = true
+			file.generated = Date.now()
 		})
-		res.redirect(`/info/${req.file.filename}`)
-		await zhcCvtText(req.file.path, {
-			type: req.body.type
+		.catch(() => {
+			file.error = true
 		})
-			.then(() => {
-				file.done = true
-				file.generated = Date.now()
-			})
-			.catch(() => {
-				file.error = true
-			})
-		setTimeout(() => {
-			delete files[req.file.filename]
-			fs.unlink(req.file.path)
-		}, DELETE_DELAY)
+	setTimeout(() => {
+		const file = files[fileId]
+		fs.unlink(file.path)
+		delete files[fileId]
+	}, DELETE_DELAY)
+})
+app.post('/zhc-convert-txt', upload.single('file'), hcaptcha, async (req, res) => {
+	if (!req.file || req.file.mimetype !== 'text/plain') {
+		return res.send('檔案並非 txt 類型')
 	}
-)
+	const fileId = req.file.filename
+	const file = (files[fileId] = {
+		originalName: req.file.originalname,
+		path: req.file.path,
+		generated: Date.now(),
+		done: false
+	})
+	res.redirect(`/info/${fileId}`)
+	await zhcCvtText(file.path, {
+		type: req.body.type
+	})
+		.then(() => {
+			file.done = true
+			file.generated = Date.now()
+		})
+		.catch(() => {
+			file.error = true
+		})
+	setTimeout(() => {
+		const file = files[fileId]
+		fs.unlink(file.path)
+		delete files[fileId]
+	}, DELETE_DELAY)
+})
 
 const PORT = process.env.PORT || 8763
-app.listen(PORT, () =>
-	console.log(`Server is listening at http://localhost:${PORT}`)
-)
+app.listen(PORT, () => console.log(`Server is listening at http://localhost:${PORT}`))
