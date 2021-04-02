@@ -19,7 +19,7 @@ const converterCache = new Map()
 const getConverter = async (from, to) => {
 	const id = from + ':' + to
 	if (converterCache.has(id)) {
-		return converterCache
+		return converterCache.get(id)
 	}
 	const cvt = await OpenCC.Converter(from, to)
 	converterCache.set(id, cvt)
