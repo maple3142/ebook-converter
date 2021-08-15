@@ -42,6 +42,13 @@ const downloadFile = async (res, fileName, filePath) => {
 	)
 }
 const files = Object.create(null)
+function addDeleteTask(fileId){
+	setTimeout(() => {
+		const file = files[fileId]
+		fs.unlink(file.path)
+		delete files[fileId]
+	}, DELETE_DELAY)
+}
 app.get('/files/:id', (req, res) => {
 	const file = files[req.params.id]
 	if (!file) {
@@ -84,11 +91,7 @@ app.post('/opencc-convert-epub', upload.single('file'), hcaptcha, async (req, re
 		.catch(() => {
 			file.error = true
 		})
-	setTimeout(() => {
-		const file = files[fileId]
-		fs.unlink(file.path)
-		delete files[fileId]
-	}, DELETE_DELAY)
+	addDeleteTask(fileId)
 })
 app.post('/opencc-convert-txt', upload.single('file'), hcaptcha, async (req, res) => {
 	if (!req.file || req.file.mimetype !== 'text/plain') {
@@ -115,11 +118,7 @@ app.post('/opencc-convert-txt', upload.single('file'), hcaptcha, async (req, res
 		.catch(() => {
 			file.error = true
 		})
-	setTimeout(() => {
-		const file = files[fileId]
-		fs.unlink(file.path)
-		delete files[fileId]
-	}, DELETE_DELAY)
+	addDeleteTask(fileId)
 })
 app.post('/zhc-convert-epub', upload.single('file'), hcaptcha, async (req, res) => {
 	if (!req.file || req.file.mimetype !== 'application/epub+zip') {
@@ -143,11 +142,7 @@ app.post('/zhc-convert-epub', upload.single('file'), hcaptcha, async (req, res) 
 		.catch(() => {
 			file.error = true
 		})
-	setTimeout(() => {
-		const file = files[fileId]
-		fs.unlink(file.path)
-		delete files[fileId]
-	}, DELETE_DELAY)
+	addDeleteTask(fileId)
 })
 app.post('/zhc-convert-txt', upload.single('file'), hcaptcha, async (req, res) => {
 	if (!req.file || req.file.mimetype !== 'text/plain') {
@@ -171,11 +166,7 @@ app.post('/zhc-convert-txt', upload.single('file'), hcaptcha, async (req, res) =
 		.catch(() => {
 			file.error = true
 		})
-	setTimeout(() => {
-		const file = files[fileId]
-		fs.unlink(file.path)
-		delete files[fileId]
-	}, DELETE_DELAY)
+	addDeleteTask(fileId)
 })
 
 const PORT = process.env.PORT || 8763
