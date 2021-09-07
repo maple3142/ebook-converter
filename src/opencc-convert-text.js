@@ -21,7 +21,7 @@ const getConverter = async (from, to) => {
 	if (converterCache.has(id)) {
 		return converterCache.get(id)
 	}
-	const cvt = await OpenCC.Converter(from, to)
+	const cvt = await OpenCC.Converter({ from, to })
 	converterCache.set(id, cvt)
 	return cvt
 }
