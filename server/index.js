@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const path = require('path')
 const fs = require('fs-extra')
 const express = require('express')
@@ -17,12 +18,14 @@ const uplDir = path.join(__dirname, 'uploads')
 const upload = multer({ dest: uplDir })
 
 app.get('/', (req, res) => {
+	res.set('Cache-control', 'public, max-age=3600')
 	res.render('index', {
 		hcaptcha: typeof process.env.HCAPTCHA_SECRET_KEY !== 'undefined'
 	})
 })
 const favicon = path.join(__dirname, '/static/favicon.ico')
 app.get('/favicon.ico', (req, res) => {
+	res.set('Cache-control', 'public, max-age=3600')
 	res.sendFile(favicon)
 })
 
@@ -42,7 +45,7 @@ const downloadFile = async (res, fileName, filePath) => {
 	)
 }
 const files = Object.create(null)
-function addDeleteTask(fileId){
+function addDeleteTask(fileId) {
 	setTimeout(() => {
 		const file = files[fileId]
 		fs.unlink(file.path)

@@ -1,10 +1,14 @@
-FROM node:12-alpine AS build
+FROM node:18-alpine AS build
+RUN mkdir /app
 WORKDIR /app
 COPY package.json .
+COPY yarn.lock .
 RUN yarn
-COPY . .
+COPY src src
+COPY server server
+COPY bin bin
 
-FROM gcr.io/distroless/nodejs:12
+FROM gcr.io/distroless/nodejs:18
 WORKDIR /app
 COPY --from=build /app .
 ENV PORT=8080

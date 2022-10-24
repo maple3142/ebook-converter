@@ -89,3 +89,4 @@ typings/
 
 server/uploads/*
 *.epub
+fly.toml
