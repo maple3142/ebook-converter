@@ -9,13 +9,20 @@ const openccCvtText = require('../src/opencc-convert-text')
 const zhcCvtEpub = require('../src/zhc-convert-epub')
 const zhcCvtText = require('../src/zhc-convert-text')
 
-const DELETE_DELAY = 15 * 60 * 1000 // 15 mins
+const DELETE_DELAY = 5 * 60 * 1000 // 5 mins
 const app = express()
 app.set('view engine', 'pug')
 app.set('views', __dirname)
 app.use('/static', express.static(path.join(__dirname, 'static')))
 const uplDir = path.join(__dirname, 'uploads')
-const upload = multer({ dest: uplDir })
+const upload = multer({
+	dest: uplDir,
+	fileFilter: (req, file, cb) => {
+		// fix: https://github.com/expressjs/multer/pull/1102
+		file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
+		cb(null, true)
+	}
+})
 
 app.get('/', (req, res) => {
 	res.set('Cache-control', 'public, max-age=3600')
@@ -46,10 +53,14 @@ const downloadFile = async (res, fileName, filePath) => {
 }
 const files = Object.create(null)
 function addDeleteTask(fileId) {
+	console.log(`Adding ${fileId} for deletion...`)
 	setTimeout(() => {
+		console.log(`Deleting ${fileId} ...`)
 		const file = files[fileId]
-		fs.unlink(file.path)
 		delete files[fileId]
+		fs.unlink(file.path).catch(err => {
+			console.log(`Deleting ${fileId} error: ${err}`)
+		})
 	}, DELETE_DELAY)
 }
 app.get('/files/:id', (req, res) => {
@@ -63,9 +74,10 @@ app.get('/files/:id', (req, res) => {
 	downloadFile(res, appendFileName(file.originalName, '-converted'), file.path)
 })
 app.get('/info/:id', (req, res) => {
+	res.set('Cache-control', 'no-cache, no-store, must-revalidate')
 	const file = files[req.params.id]
 	if (!file) {
-		res.render('info', { file: null })
+		return res.render('info', { file: null })
 	}
 	res.render('info', { id: req.params.id, file })
 })
