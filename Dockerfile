@@ -8,9 +8,7 @@ COPY src src
 COPY server server
 COPY bin bin
 
-FROM gcr.io/distroless/nodejs:18
-WORKDIR /app
-COPY --from=build /app .
+USER node
 ENV PORT=8080
 EXPOSE 8080
 CMD ["server/index.js"]
