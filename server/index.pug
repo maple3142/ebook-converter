@@ -9,6 +9,7 @@ html(lang='zh-tw')
 		link(href='/static/style.css' rel='stylesheet')
 		title epub/txt 電子書繁簡轉換
 		include ads.pug
+		+clarityblock
 	body
 		h1 epub/txt 電子書繁簡轉換
 		form.block.file-form(action='/opencc-convert-epub' method='POST' enctype='multipart/form-data')

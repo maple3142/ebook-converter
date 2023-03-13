@@ -185,4 +185,4 @@ app.post('/zhc-convert-txt', upload.single('file'), hcaptcha, async (req, res) =
 })
 
 const PORT = process.env.PORT || 8763
-app.listen(PORT, () => console.log(`Server is listening at http://localhost:${PORT}`))
+const srv = app.listen(PORT, () => console.log(`Server is listening at http://locahost:${PORT}`, srv.address()))
