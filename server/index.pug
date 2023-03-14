@@ -60,7 +60,7 @@ html(lang='zh-tw')
 			input(name='captcha' type='text' hidden)
 		form.block.file-form(action='/zhc-convert-epub' method='POST' enctype='multipart/form-data')
 			div
-				label(for='zhc-epub') Epub 檔案(繁化姬):
+				label(for='zhc-epub') Epub 檔案(繁化姬 目前不建議使用):
 				input#zhc-epub(name='file' type='file' accept='application/epub+zip')
 			div
 				label(for='select-zhc-epub') 轉換模式:&nbsp;
@@ -112,7 +112,8 @@ html(lang='zh-tw')
 				a(href='https://docs.zhconvert.org/api/getting-started/') API
 				| 的，速度就我自己測試是比
 				a(href='https://github.com/BYVoid/OpenCC') OpenCC
-				| 轉換還要慢，而品質就由請自己體會了。
+				| 轉換還要慢，不過品質比較好點。
+				| 然而它因為 api 的原因，不適合拿來轉換 epub 以及文字量大的 txt。
 		script(src='/static/script.js')
 		if hcaptcha
 			script(src="https://hcaptcha.com/1/api.js?onload=hcaptchaLoaded&render=explicit" async defer)
