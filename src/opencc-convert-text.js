@@ -4,7 +4,6 @@ const OpenCC = require('opencc-js')
 const iconv = require('iconv-lite')
 const chardet = require('chardet')
 const { Transform } = require('stream')
-const tempfile = require('tempfile')
 
 /**
  * Config object:
@@ -45,11 +44,8 @@ module.exports = async (filePath, config) => {
 
 	let cleanup = () => {}
 	if (!config.dest) {
-		config.dest = tempfile()
-		cleanup = async () => {
-			await fsp.copyFile(config.dest, filePath)
-			await fsp.unlink(config.dest)
-		}
+		config.dest = filePath + '.tmp'
+		cleanup = () => fsp.rename(config.dest, filePath)
 	}
 	const stream = fs
 		.createReadStream(filePath)
