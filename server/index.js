@@ -130,7 +130,8 @@ app.post('/opencc-convert-txt', upload.single('file'), hcaptcha, async (req, res
 			file.done = true
 			file.generated = Date.now()
 		})
-		.catch(() => {
+		.catch(err => {
+			console.error(err)
 			file.error = true
 		})
 	addDeleteTask(fileId)
@@ -185,4 +186,4 @@ app.post('/zhc-convert-txt', upload.single('file'), hcaptcha, async (req, res) =
 })
 
 const PORT = process.env.PORT || 8763
-const srv = app.listen(PORT, () => console.log(`Server is listening at http://locahost:${PORT}`, srv.address()))
+const srv = app.listen(PORT, '0.0.0.0', () => console.log(`Server is listening at http://localhost:${PORT}`, srv.address()))

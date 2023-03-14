@@ -20,6 +20,7 @@
 		"multer": "^1.4.5-lts.1",
 		"opencc-js": "^1.0.5",
 		"pug": "^3.0.2",
+		"tempfile": "3",
 		"tmp-promise": "^3.0.3",
 		"unzipper": "^0.10.5",
 		"xfetch-js": "^0.5.0"

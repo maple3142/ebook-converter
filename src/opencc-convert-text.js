@@ -4,6 +4,7 @@ const OpenCC = require('opencc-js')
 const iconv = require('iconv-lite')
 const chardet = require('chardet')
 const { Transform } = require('stream')
+const tempfile = require('tempfile')
 
 /**
  * Config object:
@@ -36,12 +37,22 @@ module.exports = async (filePath, config) => {
 		throw new Error('Invalid config.type value.')
 	}
 	const convert = await getConverter(config.type.from, config.type.to)
-	const fd = await fsp.open(filePath, 'r')
+	const tmpfd = await fsp.open(filePath, 'r')
 	const buf = Buffer.alloc(1024)
-	fd.read(buf, 0, 1024, 0)
+	tmpfd.read(buf, 0, 1024, 0)
+	await tmpfd.close()
 	const encoding = chardet.detect(buf)
-	const stream = fd
-		.createReadStream()
+
+	let cleanup = () => {}
+	if (!config.dest) {
+		config.dest = tempfile()
+		cleanup = async () => {
+			await fsp.copyFile(config.dest, filePath)
+			await fsp.unlink(config.dest)
+		}
+	}
+	const stream = fs
+		.createReadStream(filePath)
 		.pipe(iconv.decodeStream(encoding))
 		.pipe(
 			new Transform({
@@ -50,14 +61,10 @@ module.exports = async (filePath, config) => {
 				}
 			})
 		)
-		.pipe(
-			fs.createWriteStream(config.dest || filePath, {
-				encoding: 'utf-8'
-			})
-		)
+		.pipe(fs.createWriteStream(config.dest, { encoding: 'utf-8' }))
 	await new Promise((resolve, reject) => {
 		stream.on('finish', resolve)
 		stream.on('error', reject)
 	})
-	await fd.close()
+	await cleanup()
 }
