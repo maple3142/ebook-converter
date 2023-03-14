@@ -1,16 +1,13 @@
 #!/usr/bin/env node
 const path = require('path')
-const ccEpub = require('../src/opencc-convert-epub')
-const ccText = require('../src/opencc-convert-text')
+const zhcEpub = require('../src/zhc-convert-epub')
+const zhcText = require('../src/zhc-convert-text')
 
 const args = process.argv.slice(2)
 const [source, dest] = args.slice(0, 2).map(p => path.join(process.cwd(), p))
-const fn = [ccEpub, ccText][args[4] === 'txt' ? 1 : 0]
+const fn = [zhcEpub, zhcText][args[3] === 'txt' ? 1 : 0]
 
 fn(source, {
-	type: {
-		from: args[2] || 'cn',
-		to: args[3] || 'tw'
-	},
+	type: args[2] || 'Taiwan',
 	dest
 }).then(() => console.log('finished'))

@@ -4,7 +4,8 @@
 	"main": "index.js",
 	"license": "MIT",
 	"bin": {
-		"epub-cvt": "bin/cli.js"
+		"opencc-cvt": "bin/cli.js",
+		"zhc-cvt": "bin/cli-zhc.js"
 	},
 	"scripts": {
 		"start": "node server/index.js"
