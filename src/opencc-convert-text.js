@@ -1,7 +1,9 @@
-const fs = require('fs-extra')
+const fs = require('fs')
+const fsp = require('fs/promises')
 const OpenCC = require('opencc-js')
 const iconv = require('iconv-lite')
 const chardet = require('chardet')
+const { Transform } = require('stream')
 
 /**
  * Config object:
@@ -26,7 +28,6 @@ const getConverter = async (from, to) => {
 	return cvt
 }
 module.exports = async (filePath, config) => {
-	const buf = await fs.readFile(filePath)
 	if (
 		typeof config.type !== 'object' ||
 		!allowedTypes.includes(config.type.from) ||
@@ -34,8 +35,29 @@ module.exports = async (filePath, config) => {
 	) {
 		throw new Error('Invalid config.type value.')
 	}
-	const text = iconv.decode(buf, chardet.detect(buf))
 	const convert = await getConverter(config.type.from, config.type.to)
-	const converted = convert(text)
-	return fs.writeFile(config.dest || filePath, converted, 'utf-8')
+	const fd = await fsp.open(filePath, 'r')
+	const buf = Buffer.alloc(1024)
+	fd.read(buf, 0, 1024, 0)
+	const encoding = chardet.detect(buf)
+	const stream = fd
+		.createReadStream()
+		.pipe(iconv.decodeStream(encoding))
+		.pipe(
+			new Transform({
+				transform(chunk, encoding, done) {
+					done(null, convert(chunk.toString()))
+				}
+			})
+		)
+		.pipe(
+			fs.createWriteStream(config.dest || filePath, {
+				encoding: 'utf-8'
+			})
+		)
+	await new Promise((resolve, reject) => {
+		stream.on('finish', resolve)
+		stream.on('error', reject)
+	})
+	await fd.close()
 }
