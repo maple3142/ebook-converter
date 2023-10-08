@@ -25,7 +25,11 @@ module.exports = async (filePath, config) => {
 	const files = (
 		await globby('**/*.{htm,html,xhtml,ncx,opf}', { cwd: dir })
 	).map(f => path.join(dir, f))
-	await Promise.all(files.map(f => cvtFile(f, { type: config.type })))
+	// await Promise.all(files.map(f => cvtFile(f, { type: config.type })))
+	for (const file of files) {
+    	await cvtFile(file, { type: config.type })
+    	await new Promise((resolve) => setTimeout(resolve, 1000))
+  	}
 	await zipDir(dir, config.dest || filePath)
 	await cleanup()
 }
