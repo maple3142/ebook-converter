@@ -23,9 +23,9 @@ const getConverter = async (from, to) => {
 	if (converterCache.has(id)) {
 		return converterCache.get(id)
 	}
-	const cvt = await OpenCC.Converter({ from, to })
-	converterCache.set(id, cvt)
-	return cvt
+	const cvtPromise = OpenCC.Converter({ from, to })
+	converterCache.set(id, cvtPromise)
+	return cvtPromise
 }
 module.exports = async (filePath, config) => {
 	if (
