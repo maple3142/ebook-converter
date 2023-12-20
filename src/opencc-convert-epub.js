@@ -1,7 +1,5 @@
 const path = require('path')
-const fs = require('fs-extra')
 const tmp = require('tmp-promise')
-const unzipper = require('unzipper')
 const globby = require('globby')
 const cvtFile = require('./opencc-convert-text')
 const zipDir = require('./zip-dir')
@@ -21,9 +19,11 @@ const cp = require('child_process')
 module.exports = async (filePath, config) => {
 	const { path: dir, cleanup } = await tmp.dir({ unsafeCleanup: true })
 	await new Promise((res, rej) => {
-		fs.createReadStream(filePath)
-			.pipe(unzipper.Extract({ path: dir }))
-			.on('close', res)
+		cp.spawn('unzip', ['-oq', filePath, '-d', dir], { stdio: 'ignore' })
+			.on('close', code => {
+				if (code !== 0) rej(new Error('unzip failed'))
+				else res()
+			})
 			.on('error', rej)
 	})
 	const files = (await globby('**/*.{htm,html,xhtml,ncx,opf}', { cwd: dir })).map(f => path.join(dir, f))

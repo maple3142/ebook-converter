@@ -1,4 +1,7 @@
-FROM node:18.15.0-alpine AS build
+FROM node:20-alpine AS build
+
+RUN apk add --no-cache unzip
+
 RUN mkdir /app
 WORKDIR /app
 COPY package.json .

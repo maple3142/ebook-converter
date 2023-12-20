@@ -22,10 +22,6 @@
 		"pug": "^3.0.2",
 		"tempfile": "3",
 		"tmp-promise": "^3.0.3",
-		"unzipper": "^0.10.14",
 		"xfetch-js": "^0.6.0"
-	},
-	"engines": {
-		"node": "18.15.0"
 	}
 }
