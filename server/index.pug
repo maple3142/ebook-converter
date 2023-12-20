@@ -92,8 +92,6 @@ html(lang='zh-tw')
 			input(name='captcha' type='text' hidden)
 		.block.ad-container
 			+adsblock
-		if hcaptcha
-			.block.flex.center#hcaptcha-container
 		.block
 			div
 				| 請注意，所有的檔案編碼都會轉換為 UTF-8，無論原本的檔案是 BIG-5,
@@ -115,5 +113,3 @@ html(lang='zh-tw')
 				| 轉換還要慢，不過品質比較好點。
 				| 然而它因為 api 的原因，不適合拿來轉換 epub 以及文字量大的 txt。
 		script(src='/static/script.js')
-		if hcaptcha
-			script(src="https://hcaptcha.com/1/api.js?onload=hcaptchaLoaded&render=explicit" async defer)

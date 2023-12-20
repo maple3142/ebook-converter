@@ -3,7 +3,6 @@ const path = require('path')
 const fs = require('fs-extra')
 const express = require('express')
 const multer = require('multer')
-const hcaptcha = require('./hcaptcha')
 const openccCvtEpub = require('../src/opencc-convert-epub')
 const openccCvtText = require('../src/opencc-convert-text')
 const zhcCvtEpub = require('../src/zhc-convert-epub')
@@ -26,9 +25,7 @@ const upload = multer({
 
 app.get('/', (req, res) => {
 	res.set('Cache-control', 'public, max-age=3600')
-	res.render('index', {
-		hcaptcha: typeof process.env.HCAPTCHA_SECRET_KEY !== 'undefined'
-	})
+	res.render('index')
 })
 const favicon = path.join(__dirname, '/static/favicon.ico')
 app.get('/favicon.ico', (req, res) => {
@@ -81,7 +78,7 @@ app.get('/info/:id', (req, res) => {
 	}
 	res.render('info', { id: req.params.id, file })
 })
-app.post('/opencc-convert-epub', upload.single('file'), hcaptcha, async (req, res) => {
+app.post('/opencc-convert-epub', upload.single('file'), async (req, res) => {
 	if (!req.file || req.file.mimetype !== 'application/epub+zip') {
 		return res.send('檔案並非 epub 類型')
 	}
@@ -108,7 +105,7 @@ app.post('/opencc-convert-epub', upload.single('file'), hcaptcha, async (req, re
 		})
 	addDeleteTask(fileId)
 })
-app.post('/opencc-convert-txt', upload.single('file'), hcaptcha, async (req, res) => {
+app.post('/opencc-convert-txt', upload.single('file'), async (req, res) => {
 	if (!req.file || req.file.mimetype !== 'text/plain') {
 		return res.send('檔案並非 txt 類型')
 	}
@@ -135,7 +132,7 @@ app.post('/opencc-convert-txt', upload.single('file'), hcaptcha, async (req, res
 		})
 	addDeleteTask(fileId)
 })
-app.post('/zhc-convert-epub', upload.single('file'), hcaptcha, async (req, res) => {
+app.post('/zhc-convert-epub', upload.single('file'), async (req, res) => {
 	if (!req.file || req.file.mimetype !== 'application/epub+zip') {
 		return res.send('檔案並非 epub 類型')
 	}
@@ -159,7 +156,7 @@ app.post('/zhc-convert-epub', upload.single('file'), hcaptcha, async (req, res) 
 		})
 	addDeleteTask(fileId)
 })
-app.post('/zhc-convert-txt', upload.single('file'), hcaptcha, async (req, res) => {
+app.post('/zhc-convert-txt', upload.single('file'), async (req, res) => {
 	if (!req.file || req.file.mimetype !== 'text/plain') {
 		return res.send('檔案並非 txt 類型')
 	}

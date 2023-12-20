@@ -7,7 +7,5 @@
 ## Docker
 
 ```bash
-docker run -d -p 8080:8080 \
-	-e "HCAPTCHA_SECRET_KEY=KEY_HERE" \
-	maple3142/ebook-converter
+docker run --rm --name ebc -d -p 8080:8080 maple3142/ebook-converter
 ```
