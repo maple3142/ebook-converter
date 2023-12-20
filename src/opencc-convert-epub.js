@@ -5,6 +5,7 @@ const unzipper = require('unzipper')
 const globby = require('globby')
 const cvtFile = require('./opencc-convert-text')
 const zipDir = require('./zip-dir')
+const cp = require('child_process')
 
 /**
  * Config object:
@@ -25,9 +26,7 @@ module.exports = async (filePath, config) => {
 			.on('close', res)
 			.on('error', rej)
 	})
-	const files = (
-		await globby('**/*.{htm,html,xhtml,ncx,opf}', { cwd: dir })
-	).map(f => path.join(dir, f))
+	const files = (await globby('**/*.{htm,html,xhtml,ncx,opf}', { cwd: dir })).map(f => path.join(dir, f))
 	await Promise.all(files.map(f => cvtFile(f, { type: config.type })))
 	await zipDir(dir, config.dest || filePath)
 	await cleanup()
