@@ -23,5 +23,9 @@
 		"tempfile": "3",
 		"tmp-promise": "^3.0.3",
 		"xfetch-js": "^0.6.0"
+	},
+	"resolutions": {
+		"is-regex": "npm:@nolyfill/is-regex@latest",
+		"typedarray": "npm:@nolyfill/typedarray@latest"
 	}
 }
