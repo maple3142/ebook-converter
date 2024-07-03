@@ -461,11 +461,6 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
-"function-bind@npm:@nolyfill/function-bind@latest":
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/@nolyfill/function-bind/-/function-bind-1.0.21.tgz#89441e2c2d5a0d0a6b2b22db45d7bdf5ead9db6a"
-  integrity sha512-0Jsaoxp/9HJqCa3GzEzJcoi4+VfupD/o+1pBG0qJ0X3d+sKbbfSej2Faiyp0fTHH36mhsdAKi2TahEx9JV08ZA==
-
 glob-parent@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
@@ -512,16 +507,6 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
   integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
-
-"has-symbols@npm:@nolyfill/has-symbols@latest":
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/@nolyfill/has-symbols/-/has-symbols-1.0.21.tgz#aaa0d43012a62eca0abb16de69a41c510568ddbb"
-  integrity sha512-fx+nNcrPdXoPH+nKNlqRfeOOxCu7IqFAh6KqzVbuHdu5QHpPT74TmobOQzruTYq+nHeSsw3+9uc32aSa4jrkNw==
-
-"has@npm:@nolyfill/has@latest":
-  version "1.0.25"
-  resolved "https://registry.yarnpkg.com/@nolyfill/has/-/has-1.0.25.tgz#6da25fcbcab22e39f9d6ecad52ff765068d85564"
-  integrity sha512-hCBNzNlKW7317HwAFq+J4kMpm89bukHsTK6BOM379ORxZPY44WVGZALerlgJ4gyyECqjVj2hI9xuTMabYjK3DA==
 
 http-errors@2.0.0:
   version "2.0.0"
@@ -606,7 +591,7 @@ is-regex@^1.0.3, "is-regex@npm:@nolyfill/is-regex@latest":
   resolved "https://registry.yarnpkg.com/@nolyfill/is-regex/-/is-regex-1.0.24.tgz#24f94de681d42bd5977817a1f20e648e2867b8a3"
   integrity sha512-lWj2I/Lmf4BKUPTHUE6JihI0PrLwMGfoa6w1xPlesum2LcBu9j3+UFrK8KKEdp9v4V8bxyLx+xOhgovFrl97NQ==
 
-"isarray@npm:@nolyfill/isarray@latest", isarray@~1.0.0:
+isarray@~1.0.0:
   version "1.0.25"
   resolved "https://registry.yarnpkg.com/@nolyfill/isarray/-/isarray-1.0.25.tgz#7560517f2b3e05130c1b6a8d6aa4f48908d4a7e7"
   integrity sha512-wAC/8sqF2qaHrZpIxTR/9qc0XFyLW4WHX6gHVNpzKtCP8DuAL3L7eQwsMUWCg1ANL/Da3XiuueTx1J/S9piqtQ==
@@ -1095,7 +1080,7 @@ setprototypeof@1.2.0:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
 
-side-channel@^1.0.4, "side-channel@npm:@nolyfill/side-channel@latest":
+side-channel@^1.0.4:
   version "1.0.24"
   resolved "https://registry.yarnpkg.com/@nolyfill/side-channel/-/side-channel-1.0.24.tgz#f6729729f51ebde79c84f77817550c0e7cd67adc"
   integrity sha512-v6Ook3sifnCVUtvvKedU6KNL1/W27Sj+XrLOVxBgid7+F5nFaaCUbvsfkN1R4Aw91zCt0/l4u4LzfC+NyIXQKA==

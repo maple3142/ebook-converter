@@ -18,7 +18,10 @@ html(lang='zh-tw')
 			.block
 				span 原檔案名: #{file.originalName}
 				br
-				span 未知緣由導致了檔案轉換失敗。
+				span
+					| 未知緣由導致了檔案轉換失敗，請檢察檔案本身是否正確，如果確定正確卻無法成功轉換請到 
+					a(href='https://github.com/maple3142/ebook-converter') GitHub
+					|  提出問題。
 				br
 				span 若您是使用繁化姬轉換的，可能是因為檔案大小太大才失敗的，可考慮改用 OpenCC。
 		else if file.done
