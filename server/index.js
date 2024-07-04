@@ -146,7 +146,7 @@ app.post('/zhc-convert-epub', handleFileMiddleware('application/epub+zip'), (req
 	})
 	handleTaskCompletion(file, task)
 })
-app.post('/zhc-convert-txt', handleFileMiddleware('application/epub+zip'), (req, res) => {
+app.post('/zhc-convert-txt', handleFileMiddleware('text/plain'), (req, res) => {
 	const { file } = req
 	const task = zhcCvtText(file.path, {
 		type: req.body.type
