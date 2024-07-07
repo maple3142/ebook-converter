@@ -10,16 +10,3 @@ for (let i = 0; i < selects.length; i++) {
 		select.value = localStorage.getItem(select.id)
 	}
 }
-
-const uid = localStorage.getItem('uid') || Math.random() + '.' + Math.random()
-localStorage.setItem('uid', uid)
-navigator.sendBeacon(
-	'https://www.google-analytics.com/collect',
-	new URLSearchParams({
-		v: 1,
-		tid: 'UA-108821694-3',
-		cid: uid,
-		t: 'pageview',
-		dp: encodeURIComponent(location.pathname)
-	}).toString()
-)
