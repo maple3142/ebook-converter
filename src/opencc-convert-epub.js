@@ -18,16 +18,19 @@ const cp = require('child_process')
  */
 module.exports = async (filePath, config) => {
 	const { path: dir, cleanup } = await tmp.dir({ unsafeCleanup: true })
-	await new Promise((res, rej) => {
-		cp.spawn('unzip', ['-oq', filePath, '-d', dir], { stdio: 'ignore' })
-			.on('close', code => {
-				if (code !== 0) rej(new Error('unzip failed'))
-				else res()
-			})
-			.on('error', rej)
-	})
-	const files = (await globby('**/*.{htm,html,xhtml,ncx,opf}', { cwd: dir })).map(f => path.join(dir, f))
-	await Promise.all(files.map(f => cvtFile(f, { type: config.type })))
-	await zipDir(dir, config.dest || filePath)
-	await cleanup()
+	try {
+		await new Promise((res, rej) => {
+			cp.spawn('unzip', ['-oq', filePath, '-d', dir], { stdio: 'ignore' })
+				.on('close', code => {
+					if (code !== 0) rej(new Error('unzip failed'))
+					else res()
+				})
+				.on('error', rej)
+		})
+		const files = (await globby('**/*.{htm,html,xhtml,ncx,opf}', { cwd: dir })).map(f => path.join(dir, f))
+		await Promise.all(files.map(f => cvtFile(f, { type: config.type })))
+		await zipDir(dir, config.dest || filePath)
+	} finally {
+		await cleanup()
+	}
 }
