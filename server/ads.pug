@@ -6,6 +6,9 @@ mixin clarityblock
 		y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 		})(window, document, "clarity", "script", "ftnl8r6ztb");
 
+mixin cloudflare_web_analytics
+	script(defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a988b5b68f3448498260d6cca40ff625"}')
+
 mixin adsblock
 	script(async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' onerror='this.parentNode.style.display = "none"' onload='!Object.getOwnPropertyDescriptor(adsbygoogle, "onload") ? this.parentNode.style.display = "none" : 0')
 	ins.adsbygoogle(style='display:block' data-ad-client='ca-pub-9668242940924302' data-ad-slot='5777875091' data-ad-format='auto' data-full-width-responsive='true')

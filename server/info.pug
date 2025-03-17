@@ -9,6 +9,7 @@ html(lang='zh-tw')
 			title #{file.originalName} 轉換資訊
 		link(href='/static/style.css' rel='stylesheet')
 		include ads.pug
+		+cloudflare_web_analytics
 		+clarityblock
 	body
 		if !file
